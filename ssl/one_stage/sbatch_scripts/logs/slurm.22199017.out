@@ -1,0 +1,64 @@
+Using cuda
+Saved final model: output/brats/fold_0/cut_paste/final_cut_paste.pt
+Using cuda
+output/brats/fold_0/cut_paste/final_cut_paste.pt
+Load successfully!
+(2776, 1, 256, 256)
+(2776, 1, 256, 256)
+torch.Size([2776, 1, 64, 64])
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.Conv2d'>.
+[INFO] Register count_normalization() for <class 'torch.nn.modules.batchnorm.BatchNorm2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.activation.ReLU'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.pooling.MaxPool2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.container.Sequential'>.
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.ConvTranspose2d'>.
+[INFO] Register count_upsample() for <class 'torch.nn.modules.upsampling.UpsamplingBilinear2d'>.
+CutPaste brats 	AUC 0.4650161443918698 	AP 0.6835240501520644 	PixAP 0.075550623501902 	BestDice 0.13887353280782985 	FLOPs 1865.2928M 	Params 11.4914M
+Using cuda
+Saved final model: output/brats/fold_0/fpi/final_fpi.pt
+Using cuda
+output/brats/fold_0/fpi/final_fpi.pt
+Load successfully!
+(2776, 1, 256, 256)
+(2776, 1, 256, 256)
+torch.Size([2776, 1, 64, 64])
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.Conv2d'>.
+[INFO] Register count_normalization() for <class 'torch.nn.modules.batchnorm.BatchNorm2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.activation.ReLU'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.pooling.MaxPool2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.container.Sequential'>.
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.ConvTranspose2d'>.
+[INFO] Register count_upsample() for <class 'torch.nn.modules.upsampling.UpsamplingBilinear2d'>.
+FPI brats 	AUC 0.5142422799551627 	AP 0.6940539428795839 	PixAP 0.056742680371985245 	BestDice 0.13203507565852526 	FLOPs 1865.2928M 	Params 11.4914M
+Using cuda
+Saved final model: output/brats/fold_0/fpi/final_fpi_poisson.pt
+Using cuda
+output/brats/fold_0/fpi/final_fpi_poisson.pt
+Load successfully!
+(2776, 1, 256, 256)
+(2776, 1, 256, 256)
+torch.Size([2776, 1, 64, 64])
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.Conv2d'>.
+[INFO] Register count_normalization() for <class 'torch.nn.modules.batchnorm.BatchNorm2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.activation.ReLU'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.pooling.MaxPool2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.container.Sequential'>.
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.ConvTranspose2d'>.
+[INFO] Register count_upsample() for <class 'torch.nn.modules.upsampling.UpsamplingBilinear2d'>.
+FPI-Poisson brats 	AUC 0.8420379132815522 	AP 0.9048581142610943 	PixAP 0.44887917327961363 	BestDice 0.4591367427641807 	FLOPs 1865.2928M 	Params 11.4914M
+Using cuda
+Saved final model: output/brats/fold_0/shift/final_shift_intensity_m.pt
+Using cuda
+output/brats/fold_0/shift/final_shift_intensity_m.pt
+Load successfully!
+(2776, 1, 256, 256)
+(2776, 1, 256, 256)
+torch.Size([2776, 1, 64, 64])
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.Conv2d'>.
+[INFO] Register count_normalization() for <class 'torch.nn.modules.batchnorm.BatchNorm2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.activation.ReLU'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.pooling.MaxPool2d'>.
+[INFO] Register zero_ops() for <class 'torch.nn.modules.container.Sequential'>.
+[INFO] Register count_convNd() for <class 'torch.nn.modules.conv.ConvTranspose2d'>.
+[INFO] Register count_upsample() for <class 'torch.nn.modules.upsampling.UpsamplingBilinear2d'>.
+Shift-Intensity-M brats 	AUC 0.8734233798569573 	AP 0.9060855596520585 	PixAP 0.532188532988277 	BestDice 0.5270039655209912 	FLOPs 1865.2928M 	Params 11.4914M
