@@ -3,7 +3,7 @@ title: "AUCp: Pseudo-AUC for Inference Model Selection with Unlabeled Validation
 message: "If you use this software, please cite the accompanying paper."
 type: software
 authors:
-  - given-names: Md Mahfuzur Rahman
+  - given-names: Md Mahfuzur
     family-names: Rahman Siddiquee
     email: mrahmans@asu.edu
     affiliation: Arizona State University
@@ -34,7 +34,7 @@ preferred-citation:
   year: 2026
   doi: "10.1109/TMI.2026.3684946"
   authors:
-    - given-names: Md Mahfuzur Rahman
+    - given-names: Md Mahfuzur
       family-names: Rahman Siddiquee
     - given-names: Fazle
       family-names: Rafsani
