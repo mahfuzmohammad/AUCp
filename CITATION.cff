@@ -16,10 +16,10 @@ authors:
   - given-names: Teresa
     family-names: Wu
     affiliation: Arizona State University
-  - given-names: Catherine D
+  - given-names: Catherine
     family-names: Chong
     affiliation: Mayo Clinic, Arizona
-  - given-names: Todd J
+  - given-names: Todd
     family-names: Schwedt
     affiliation: Mayo Clinic, Arizona
   - given-names: Baoxin
@@ -42,9 +42,9 @@ preferred-citation:
       family-names: Shah
     - given-names: Teresa
       family-names: Wu
-    - given-names: Catherine D
+    - given-names: Catherine
       family-names: Chong
-    - given-names: Todd J
+    - given-names: Todd
       family-names: Schwedt
     - given-names: Baoxin
       family-names: Li
