@@ -1,4 +1,5 @@
 import os
+import sys
 import numpy as np
 import torch
 from torch import nn
@@ -13,6 +14,13 @@ import pandas as pd
 from self_sup_data.chest_xray import SelfSupChestXRay
 from model.resnet import resnet18_enc_dec
 from experiments.training_utils import train_and_save_model
+
+# Make ``aucp`` importable when this script runs from ssl/two_stage/.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from aucp.paths import data_root as _data_root
 
 import warnings
 
@@ -138,7 +146,7 @@ def train(data, out_dir, setting, device, pool, preact,
         T.CenterCrop(230),
         T.RandomCrop(224)])
 
-    data_root = os.path.join(os.path.expanduser("~"), "MedIAnomaly-Data")
+    data_root = str(_data_root())
     if data in ['rsna', 'vin', 'brain', 'lag']:
         if data == 'rsna':
             path = os.path.join(data_root, 'RSNA')

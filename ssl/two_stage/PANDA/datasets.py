@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 import numpy as np
 from joblib import Parallel, delayed
@@ -10,28 +11,20 @@ from torchvision import transforms
 
 
 def get_data_path(dataset):
-    # data_root = os.path.join(os.path.expanduser("~"), "Med-AD")
-    data_root = "/data/amciilab/jay/AUCp_experiments/MedIAnomaly-Data"
-    if dataset == 'rsna':
-        return os.path.join(data_root, "RSNA")
-    elif dataset == 'vin':
-        return os.path.join(data_root, "VinCXR")
-    elif dataset == 'brain':
-        return os.path.join(data_root, "BrainTumor")
-    elif dataset == 'lag':
-        return os.path.join(data_root, "LAG")
-    elif dataset == 'brats':
-        return os.path.join(data_root, "BraTS2021")
-    elif dataset == 'c16':
-        return os.path.join(data_root, "Camelyon16")
-    elif dataset == 'isic':
-        return os.path.join(data_root, "ISIC2018_Task3")
-    elif dataset == 'oct':
+    # Data root is configurable via AUCP_DATA_ROOT (see aucp/paths.py).
+    _repo_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                              os.pardir, os.pardir, os.pardir))
+    if _repo_root not in sys.path:
+        sys.path.insert(0, _repo_root)
+    from aucp.paths import data_root, dataset_path
+
+    if dataset in ('rsna', 'vin', 'brain', 'lag', 'brats', 'c16', 'isic'):
+        return str(dataset_path(dataset))
+    if dataset == 'oct':
         return os.path.join(os.path.expanduser("~"), "datasets", "OCT2017")
-    elif dataset == 'colon':
+    if dataset == 'colon':
         return os.path.join(os.path.expanduser("~"), "datasets", "Colon_AD_public")
-    else:
-        raise Exception("Invalid dataset: {}".format(dataset))
+    raise Exception("Invalid dataset: {}".format(dataset))
 
 
 def parallel_load(img_dir, img_list, img_size, n_channel=3, resample="bilinear", verbose=0):

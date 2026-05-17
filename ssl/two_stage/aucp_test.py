@@ -1,4 +1,5 @@
 import os
+import sys
 import numpy as np
 from torchvision import transforms as T
 import cv2
@@ -18,6 +19,13 @@ import glob
 from torchvision import transforms
 import copy
 import csv
+
+# Make ``aucp`` importable when this script runs from ssl/two_stage/.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from aucp.paths import data_root as _data_root
 
 # warnings.filterwarnings('ignore')
 
@@ -104,8 +112,8 @@ if __name__ == "__main__":
     data = args.data
     final = True
 
-    # data_root = os.path.join(os.path.expanduser("~"), "MedIAnomaly-Data")
-    data_root = "/data/amciilab/jay/AUCp_experiments/MedIAnomaly-Data"
+    # Data root is configurable via AUCP_DATA_ROOT (see aucp/paths.py).
+    data_root = str(_data_root())
     out_dir = os.path.join("models", args.data)
     model_dir = out_dir
 

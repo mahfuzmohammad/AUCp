@@ -1,109 +1,64 @@
-import csv
+"""Summarize AUC vs AUCp results across reconstruction-method runs.
+
+Reads per-epoch metrics from ``<output_root>/reconstruction/<dataset>/<method>/fold_0``
+and prints, for each (dataset, method), the AUC of the last-epoch model and
+the AUC of the model that maximized AUCp. Output root is configurable via the
+``AUCP_OUTPUT_ROOT`` environment variable; see ``aucp/paths.py``.
+"""
+
+import os
+import sys
 from glob import glob
 
-# auc_txts = glob("Experiment/MedIAnomaly/*/*/fold_0/auc_metrics_*.txt")
-# aucp_txts = glob("Experiment/MedIAnomaly/*/*/fold_0/aucp_metrics_*.txt")
+_REPO_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
 
-# print(f"Found {len(auc_txts)} AUC text files.")
-# print(f"Found {len(aucp_txts)} AUCP text files.")
-
-# datasets="rsna vin brain lag isic c16 brats"
-# methods="memae aeu"
-
-datasets="rsna vin brain lag"
-methods="ae ae-l1"
+from aucp.paths import output_root
 
 
-vin_aeu_aucs, vin_aeu_aucps = [], []
-brain_aeu_aucs, brain_aeu_aucps = [], []
+DATASETS = "rsna vin brain lag".split()
+METHODS = "ae ae-l1".split()
 
-for dataset in datasets.split():
-    for method in methods.split():
-        aucs, aucps = [], []
-        #auc_txts = sorted(glob(f"Experiment/MedIAnomaly/{dataset}/{method}/fold_0/auc_metrics_*.txt"))
-        #aucp_txts = sorted(glob(f"Experiment/MedIAnomaly/{dataset}/{method}/fold_0/aucp_metrics_*.txt"))
-        auc_txts = sorted(glob(f"/data/amciilab/Fazle/AUCp/jay/AUCp_experiments/MedIAnomaly/reconstruction/New_Result/{dataset}/{method}/fold_0/auc_metrics_*.txt"))
-        aucp_txts = sorted(glob(f"/data/amciilab/Fazle/AUCp/jay/AUCp_experiments/MedIAnomaly/reconstruction/New_Result/{dataset}/{method}/fold_0/aucp_metrics_*.txt"))
-        # print(f"Processing dataset: {dataset}, method: {method}...")
-        # print(f"Found {len(auc_txts)} AUC text files.")
-        # print(f"Found {len(aucp_txts)} AUCP text files.")
 
-        for aucp_txt in aucp_txts:
-            
-            auc_txt = aucp_txt.replace("aucp_metrics", "auc_metrics")
-            #metrics_txt = f"Experiment/MedIAnomaly/{dataset}/{method}/fold_0/metrics.txt"
-            metrics_txt = f"/data/amciilab/Fazle/AUCp/jay/AUCp_experiments/MedIAnomaly/reconstruction/New_Result/{dataset}/{method}/fold_0/metrics.txt"
-            if auc_txt in auc_txts:
-                with open(auc_txt, "r") as f:
-                    lines = f.readlines()
-                    for line in lines:
-                        if "AUC" in line and not "PixAUC" in line:
-                            aucs.append(float(line.split()[-1]))
-                            
-                
-                with open(aucp_txt, "r") as f:
-                    lines = f.readlines()
-                    for line in lines:
-                        if "AUC" in line and not "PixAUC" in line:
-                            aucps.append(float(line.split()[-1]))
-           # print(f"Processed {len(aucp_txts)} AUCP files for dataset: {dataset}, method: {method}.")
-            with open(metrics_txt, "r") as f:   
-                lines = f.readlines()
-                for line in lines:
-                    if "AUC" in line and not "PixAUC" in line:
-                        orig_auc = float(line.split()[-1])
+def main() -> None:
+    base = output_root() / "reconstruction"
+    for dataset in DATASETS:
+        for method in METHODS:
+            run_dir = base / dataset / method / "fold_0"
+            aucs, aucps = [], []
 
-        max_aucp = max(aucp for aucp in aucps if aucp > 0)
-        index_max_aucp = aucps.index(max_aucp)
-        max_auc = aucs[index_max_aucp]
-        last_auc = aucs[-1]
+            auc_txts = sorted(glob(str(run_dir / "auc_metrics_*.txt")))
+            aucp_txts = sorted(glob(str(run_dir / "aucp_metrics_*.txt")))
 
-        # print(f"Dataset: {dataset}, Method: {method}, Max AUCP: {max_aucp:.4f} (AUC: {max_auc:.4f}), Last AUC: {last_auc:.4f}, Original AUC: {orig_auc:.4f}")
-        print(f"Dataset: {dataset}, Method: {method}, Last AUC: {last_auc:.4f}, AUC for max AUCp: {max_auc:.4f}")
-        print("----------------------------------------------------------------")
+            for aucp_txt in aucp_txts:
+                auc_txt = aucp_txt.replace("aucp_metrics", "auc_metrics")
+                if auc_txt in auc_txts:
+                    with open(auc_txt) as f:
+                        for line in f:
+                            if "AUC" in line and "PixAUC" not in line:
+                                aucs.append(float(line.split()[-1]))
+                    with open(aucp_txt) as f:
+                        for line in f:
+                            if "AUC" in line and "PixAUC" not in line:
+                                aucps.append(float(line.split()[-1]))
 
-# ################################################################
-#         if dataset == "vin" and method == "aeu":
-#             vin_aeu_aucs = aucs
-#             vin_aeu_aucps = aucps
-#         elif dataset == "brain" and method == "aeu":
-#             brain_aeu_aucs = aucs
-#             brain_aeu_aucps = aucps
-#         else:
-#             continue
+            if not aucps:
+                print(f"Dataset: {dataset}, Method: {method} — no runs found in {run_dir}")
+                print("-" * 64)
+                continue
 
-# print("length of vin_aeu_aucs:", len(vin_aeu_aucs))
-# print("length of vin_aeu_aucps:", len(vin_aeu_aucps))
-# print("length of brain_aeu_aucs:", len(brain_aeu_aucs))
-# print("length of brain_aeu_aucps:", len(brain_aeu_aucps))
+            max_aucp = max(v for v in aucps if v > 0)
+            idx = aucps.index(max_aucp)
+            max_auc = aucs[idx]
+            last_auc = aucs[-1]
 
-# # Can we draw 3 plots (one for each) where x-axis is the model i and y axis shows AUCp and AUC?
-# import matplotlib.pyplot as plt
+            print(
+                f"Dataset: {dataset}, Method: {method}, "
+                f"Last AUC: {last_auc:.4f}, AUC for max AUCp: {max_auc:.4f}"
+            )
+            print("-" * 64)
 
-# # VIN plot
-# plt.figure(figsize=(8, 4))
-# plt.scatter(range(1, len(vin_aeu_aucs)+1), vin_aeu_aucs, label='VIN AUC', color='blue', marker='o')
-# plt.scatter(range(1, len(vin_aeu_aucps)+1), vin_aeu_aucps, label='VIN AUCP', color='orange', marker='x')
-# plt.xlabel('Model Index')
-# plt.ylabel('Value')
-# plt.title('VIN AEU: AUC and AUCP Scatter Plot')
-# plt.ylim(0, 1)
-# plt.legend()
-# plt.grid(True)
-# plt.tight_layout()
-# plt.savefig('vin_aeu_auc_aucp_scatter.png')
-# plt.close()
 
-# # Brain plot
-# plt.figure(figsize=(8, 4))
-# plt.scatter(range(1, len(brain_aeu_aucs)+1), brain_aeu_aucs, label='Brain AUC', color='green', marker='o')
-# plt.scatter(range(1, len(brain_aeu_aucps)+1), brain_aeu_aucps, label='Brain AUCP', color='red', marker='x')
-# plt.xlabel('Model Index')
-# plt.ylabel('Value')
-# plt.title('Brain AEU: AUC and AUCP Scatter Plot')
-# plt.ylim(0, 1)
-# plt.legend()
-# plt.grid(True)
-# plt.tight_layout()
-# plt.savefig('brain_aeu_auc_aucp_scatter.png')
-# plt.close()
+if __name__ == "__main__":
+    main()

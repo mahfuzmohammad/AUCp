@@ -11,7 +11,13 @@ class AEUWorker(AEWorker):
     def __init__(self, opt):
         super(AEUWorker, self).__init__(opt)
         self.logger = logging.getLogger(__name__)
-        logging.basicConfig(filename=f'/data/amciilab/Fazle/AUCp/jay/AUCp_experiments/MedIAnomaly/reconstruction/logs_new_reconstruction/log_{self.opt.dataset}_{self.opt.model["name"]}.log', level=logging.INFO)
+        from aucp.paths import output_root
+        log_dir = output_root() / "reconstruction" / "logs"
+        log_dir.mkdir(parents=True, exist_ok=True)
+        logging.basicConfig(
+            filename=str(log_dir / f'log_{self.opt.dataset}_{self.opt.model["name"]}.log'),
+            level=logging.INFO,
+        )
 
     def train_epoch(self):
         self.net.train()

@@ -60,7 +60,13 @@ class AEWorker(BaseWorker):
         self.grad_flag = True if self.opt.model['name'] in ['ae-grad', 'vae-elbo', 'vae-kl', 'vae-rec', 'vae-combi'] \
             else False
         self.logger = logging.getLogger(__name__)
-        logging.basicConfig(filename=f'/data/amciilab/Fazle/AUCp/jay/AUCp_experiments/MedIAnomaly/reconstruction/test_low_abnormal/log_{self.opt.dataset}_{self.opt.model["name"]}.log', level=logging.INFO)
+        from aucp.paths import output_root
+        log_dir = output_root() / "reconstruction" / "logs"
+        log_dir.mkdir(parents=True, exist_ok=True)
+        logging.basicConfig(
+            filename=str(log_dir / f'log_{self.opt.dataset}_{self.opt.model["name"]}.log'),
+            level=logging.INFO,
+        )
         
         
         

@@ -11,10 +11,12 @@
 #SBATCH --mail-type=ALL # Send an e-mail when a job starts, stops, or fails
 #SBATCH --export=NONE   # Purge the job-submitting shell environment
 
-# Load required modules for job's environment
-module load mamba/latest
-# Using python, so source activate an appropriate environment
-source activate rafenv
+# Load required modules for job's environment (uncomment and adjust for your cluster).
+# module load mamba/latest
+# source activate rafenv
+
+# Run from the directory containing this script so relative imports resolve.
+cd "$(dirname "$0")"
 
 num_repeat=1
 datasets="rsna vin brain lag isic c16 brats"
@@ -24,7 +26,7 @@ gpu_id=5
 for data in $datasets;do
   for setting in $settings;do
     for((i=0;i<num_repeat;i=i+1));do
-    python /scratch/frafsani/AUCp_experiments/MedIAnomaly/ssl/one_stage/AUCP_test.py -d "$data" -s "$setting" -g $gpu_id -f "$i";
+      python AUCP_test.py -d "$data" -s "$setting" -g $gpu_id -f "$i";
     done
   done
 done

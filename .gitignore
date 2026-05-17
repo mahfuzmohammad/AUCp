@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+.installed.cfg
+develop-eggs/
+parts/
+var/
+wheels/
+
+# Virtual envs
+.venv/
+venv/
+env/
+ENV/
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Experiment outputs (use AUCP_OUTPUT_ROOT to relocate)
+output/
+slurm.*.out
+slurm.*.err
+*.log
+logs/
+
+# Caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover

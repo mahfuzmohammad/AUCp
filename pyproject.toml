@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aucp"
+version = "0.1.0"
+description = "Pseudo-AUC (AUCp) for inference-time model selection with unlabeled validation data."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Md Mahfuzur Rahman Siddiquee", email = "mrahmans@asu.edu" },
+    { name = "Fazle Rafsani" },
+    { name = "Jay Shah" },
+    { name = "Teresa Wu" },
+    { name = "Catherine D Chong" },
+    { name = "Todd J Schwedt" },
+    { name = "Baoxin Li" },
+]
+keywords = [
+    "anomaly detection",
+    "abnormality detection",
+    "model selection",
+    "medical imaging",
+    "unsupervised learning",
+    "self-supervised learning",
+    "AUC",
+    "pseudo-AUC",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.20",
+    "scikit-learn>=1.0",
+]
+
+[project.optional-dependencies]
+experiments = [
+    "torch>=2.0",
+    "torchvision>=0.15",
+    "opencv-python>=4.5",
+    "pandas>=1.3",
+    "matplotlib>=3.4",
+    "Pillow>=9.0",
+    "tqdm>=4.60",
+    "tensorboard>=2.10",
+    "thop>=0.1",
+    "joblib>=1.1",
+    "SimpleITK>=2.1",
+    "scipy>=1.7",
+]
+dev = [
+    "pytest>=7.0",
+    "matplotlib>=3.4",
+    "jupyter>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mahfuzmohammad/AUCp"
+Paper = "https://doi.org/10.1109/TMI.2026.3684946"
+Issues = "https://github.com/mahfuzmohammad/AUCp/issues"
+
+[tool.setuptools.packages.find]
+include = ["aucp*"]
+exclude = ["reconstruction*", "ssl*", "examples*"]

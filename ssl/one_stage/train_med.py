@@ -1,4 +1,5 @@
 import os
+import sys
 import numpy as np
 import torch
 from torch import nn
@@ -13,6 +14,13 @@ import pandas as pd
 from self_sup_data.chest_xray import SelfSupChestXRay
 from model.resnet import resnet18_enc_dec
 from experiments.training_utils import train_and_save_model
+
+# Make ``aucp`` importable when this script runs from ssl/one_stage/.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from aucp.paths import data_root as _data_root, output_root as _output_root
 
 import warnings
 
@@ -138,8 +146,8 @@ def train(data, out_dir, setting, device, pool, preact,
         T.CenterCrop(230),
         T.RandomCrop(224)])
 
-    # data_root = os.path.join(os.path.expanduser("~"), "MedIAnomaly-Data")
-    data_root = "/data/amciilab/jay/AUCp_experiments/MedIAnomaly-Data"
+    # Data root is configurable via AUCP_DATA_ROOT (see aucp/paths.py).
+    data_root = str(_data_root())
     if data in ['rsna', 'vin', 'brain', 'lag']:
         if data == 'rsna':
             path = os.path.join(data_root, 'RSNA')
@@ -220,7 +228,8 @@ if __name__ == "__main__":
     # epoch = epochs[args.data]
     epoch = epochs.setdefault(args.data, 250)
 
-    out_dir = os.path.join("output", args.data, "fold_{:d}".format(args.fold))
+    # Output root is configurable via AUCP_OUTPUT_ROOT (see aucp/paths.py).
+    out_dir = str(_output_root() / "ssl_one_stage" / args.data / f"fold_{args.fold}")
 
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)

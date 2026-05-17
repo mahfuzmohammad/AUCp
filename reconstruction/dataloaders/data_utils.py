@@ -1,5 +1,13 @@
 import os
+import sys
 from torchvision import transforms
+
+# Make ``aucp`` importable when these scripts run from the reconstruction/ dir.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+
+from aucp.paths import data_root, dataset_path
 
 
 def get_transform(opt):
@@ -12,28 +20,13 @@ def get_transform(opt):
 
 
 def get_data_path(dataset):
-    # data_root = os.path.join(os.path.expanduser("~"), "MedIAnomaly-Data")
-    data_root = "/data/amciilab/jay/AUCp_experiments/MedIAnomaly-Data"
-
-    if dataset == 'rsna':
-        return os.path.join(data_root, "RSNA")
-    elif dataset == 'vin':
-        return os.path.join(data_root, "VinCXR")
-    elif dataset == 'brain':
-        return os.path.join(data_root, "BrainTumor")
-    elif dataset == 'lag':
-        return os.path.join(data_root, "LAG")
-    elif dataset == 'brats':
-        return os.path.join(data_root, "BraTS2021")
-    elif dataset == 'c16':
-        return os.path.join(data_root, "Camelyon16")
-    elif dataset == 'oct':
+    if dataset in ('rsna', 'vin', 'brain', 'lag', 'brats', 'c16', 'isic'):
+        return str(dataset_path(dataset))
+    # Datasets that live outside MedIAnomaly-Data keep their previous layout.
+    if dataset == 'oct':
         return os.path.join(os.path.expanduser("~"), "datasets", "OCT2017")
-    elif dataset == 'colon':
+    if dataset == 'colon':
         return os.path.join(os.path.expanduser("~"), "datasets", "Colon_AD_public")
-    elif dataset == 'isic':
-        return os.path.join(data_root, "ISIC2018_Task3")
-    elif dataset == 'cpchild':
-        return os.path.join(data_root, "CP-CHILD/CP-CHILD-A")
-    else:
-        raise Exception("Invalid dataset: {}".format(dataset))
+    if dataset == 'cpchild':
+        return os.path.join(str(data_root()), "CP-CHILD", "CP-CHILD-A")
+    raise Exception("Invalid dataset: {}".format(dataset))

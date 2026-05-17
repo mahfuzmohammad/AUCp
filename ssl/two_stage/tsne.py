@@ -5,10 +5,18 @@ from tqdm import tqdm
 import datetime
 import argparse
 import random
+import sys
 import numpy as np
 import os
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
+
+# Make ``aucp`` importable when this script runs from ssl/two_stage/.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from aucp.paths import data_root as _data_root
 
 import torch
 from torch import optim
@@ -104,7 +112,7 @@ def run_training(data_type="zhanglab",
     test_transform.transforms.append(transforms.ToTensor())
     test_transform.transforms.append(transforms.Normalize(mean=[0.5], std=[0.5]))
 
-    data_path = "/home/ycaibt/Med-AD/"
+    data_path = str(_data_root())
     if data_type in ['rsna', 'vin', 'brain', 'lag']:
         if data_type == 'rsna':
             data_path = os.path.join(data_path, "RSNA")

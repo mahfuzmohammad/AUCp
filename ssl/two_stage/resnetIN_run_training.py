@@ -5,8 +5,16 @@ from tqdm import tqdm
 import datetime
 import argparse
 import random
+import sys
 import numpy as np
 import os
+
+# Make ``aucp`` importable when this script runs from ssl/two_stage/.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from aucp.paths import data_root as _data_root
 
 import torch
 from torch import optim
@@ -99,8 +107,8 @@ def run_training(data_type="zhanglab",
     test_transform.transforms.append(transforms.ToTensor())
     test_transform.transforms.append(transforms.Normalize(mean=[0.5], std=[0.5]))
 
-    # data_path = os.path.join(os.path.expanduser("~"), "MedIAnomaly-Data")
-    data_path = "/data/amciilab/jay/AUCp_experiments/MedIAnomaly-Data"
+    # Data root is configurable via AUCP_DATA_ROOT (see aucp/paths.py).
+    data_path = str(_data_root())
 
     if data_type in ['rsna', 'vin', 'brain', 'lag']:
         if data_type == 'rsna':

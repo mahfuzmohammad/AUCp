@@ -1,5 +1,13 @@
 import os
+import sys
 import argparse
+
+# Make ``aucp`` importable when these scripts run from the reconstruction/ dir.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+
+from aucp.paths import output_root
 
 
 class Options:
@@ -65,8 +73,8 @@ class Options:
         self.dataset = args.dataset
         self.project_name = args.project_name
         self.fold = args.fold
-        # self.result_dir = os.path.expanduser("~") + f'/Experiment/MedIAnomaly/{self.dataset}'
-        self.result_dir = f'/data/amciilab/Fazle/AUCp/jay/AUCp_experiments/MedIAnomaly/reconstruction/New_Result/{self.dataset}'
+        # Output root is configurable via AUCP_OUTPUT_ROOT (see aucp/paths.py).
+        self.result_dir = str(output_root() / "reconstruction" / self.dataset)
 
         self.model['name'] = args.model_name
         self.model['in_c'] = self.in_c.setdefault(self.dataset, 1)

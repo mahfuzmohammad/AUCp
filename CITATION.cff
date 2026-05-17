@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+title: "AUCp: Pseudo-AUC for Inference Model Selection with Unlabeled Validation Data in Abnormality Detection"
+message: "If you use this software, please cite the accompanying paper."
+type: software
+authors:
+  - given-names: Md Mahfuzur Rahman
+    family-names: Rahman Siddiquee
+    email: mrahmans@asu.edu
+    affiliation: Arizona State University
+  - given-names: Fazle
+    family-names: Rafsani
+    affiliation: Arizona State University
+  - given-names: Jay
+    family-names: Shah
+    affiliation: Arizona State University
+  - given-names: Teresa
+    family-names: Wu
+    affiliation: Arizona State University
+  - given-names: Catherine D
+    family-names: Chong
+    affiliation: Mayo Clinic, Arizona
+  - given-names: Todd J
+    family-names: Schwedt
+    affiliation: Mayo Clinic, Arizona
+  - given-names: Baoxin
+    family-names: Li
+    affiliation: Arizona State University
+repository-code: "https://github.com/mahfuzmohammad/AUCp"
+license: MIT
+preferred-citation:
+  type: article
+  title: "AUCp: Pseudo-AUC for Inference Model Selection with Unlabeled Validation Data in Abnormality Detection"
+  journal: "IEEE Transactions on Medical Imaging"
+  year: 2026
+  doi: "10.1109/TMI.2026.3684946"
+  authors:
+    - given-names: Md Mahfuzur Rahman
+      family-names: Rahman Siddiquee
+    - given-names: Fazle
+      family-names: Rafsani
+    - given-names: Jay
+      family-names: Shah
+    - given-names: Teresa
+      family-names: Wu
+    - given-names: Catherine D
+      family-names: Chong
+    - given-names: Todd J
+      family-names: Schwedt
+    - given-names: Baoxin
+      family-names: Li

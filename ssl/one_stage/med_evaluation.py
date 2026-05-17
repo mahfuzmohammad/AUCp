@@ -1,4 +1,5 @@
 import os
+import sys
 import numpy as np
 from torchvision import transforms as T
 import cv2
@@ -16,6 +17,13 @@ from thop import profile
 import glob
 from torchvision import transforms
 import copy
+
+# Make ``aucp`` importable when this script runs from ssl/one_stage/.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from aucp.paths import data_root as _data_root, output_root as _output_root
 
 
 # warnings.filterwarnings('ignore')
@@ -92,8 +100,9 @@ if __name__ == "__main__":
     data = args.data
     final = True
 
-    data_root = os.path.join(os.path.expanduser("~"), "MedIAnomaly-Data")
-    out_dir = os.path.join("output", args.data, "fold_{:d}".format(args.fold))
+    # Data and output roots are configurable via AUCP_DATA_ROOT / AUCP_OUTPUT_ROOT.
+    data_root = str(_data_root())
+    out_dir = str(_output_root() / "ssl_one_stage" / args.data / f"fold_{args.fold}")
     model_dir = out_dir
 
     if data in ['rsna', 'vin', 'brain', 'lag']:

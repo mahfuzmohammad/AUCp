@@ -7,6 +7,7 @@ import torch
 from proj_model import ProjectionNet
 import matplotlib.pyplot as plt
 import argparse
+import sys
 from pathlib import Path
 from anatpaste import CutPaste, cut_paste_collate_fn
 from sklearn.utils import shuffle
@@ -17,6 +18,13 @@ from density import GaussianDensitySklearn, GaussianDensityTorch
 import pandas as pd
 from utils import str2bool
 import os
+
+# Make ``aucp`` importable when this script runs from ssl/two_stage/.
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          os.pardir, os.pardir))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from aucp.paths import data_root as _data_root
 from dataset import zhanglab_dataset, Repeat, chexpert_dataset, rsna_dataset, MedAD, MedAD_aucp, BraTSAD, BraTSAD_aucp, Camelyon16AD, Camelyon16AD_aucp, ISIC2018, ISIC2018_aucp
 from thop import profile
 import copy
@@ -218,8 +226,8 @@ if __name__ == '__main__':
         raise Exception(f"No model found in {out_dir}. Please check the directory.")
     print(f"evaluating {data_type}")
 
-    # data_path = os.path.join(os.path.expanduser("~"), "MedIAnomaly-Data")
-    data_path = "/data/amciilab/jay/AUCp_experiments/MedIAnomaly-Data"
+    # Data root is configurable via AUCP_DATA_ROOT (see aucp/paths.py).
+    data_path = str(_data_root())
     if data_type in ['rsna', 'vin', 'brain', 'lag']:
         if data_type == 'rsna':
             data_path = os.path.join(data_path, "RSNA")
